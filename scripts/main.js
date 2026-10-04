@@ -1,6 +1,6 @@
 // Defense & Factory AI Assistant
-// Клиентский скрипт Mindustry v7+ / Rhino JavaScript.
-// Команды обрабатываются через события, без Vars.netClient.addCommand.
+// Клиентский JavaScript-мод Mindustry v7+.
+// В этом файле нет серверной регистрации команд и нет обращений к NetClient.
 
 var Events = Packages.arc.Events;
 var Time = Packages.arc.util.Time;
@@ -8,61 +8,45 @@ var Log = Packages.arc.util.Log;
 var EventType = Packages.mindustry.game.EventType;
 var Vars = Packages.mindustry.Vars;
 
-function showAssistantToast(message) {
+function assistantToast(text) {
     if (Vars.ui != null && Vars.ui.hudfrag != null) {
-        Vars.ui.hudfrag.showToast(message);
+        Vars.ui.hudfrag.showToast("[cyan]Ассистент: " + text);
     }
 }
 
-function showAssistantMessage(message) {
-    showAssistantToast("[cyan][Assist[] " + message);
-    Log.info("[Assist] " + message);
-}
-
-function getCommand(message) {
+function commandFromMessage(message) {
+    var text;
     if (message == null) return "";
 
-    var text = String(message).trim();
-    if (text == "/assist") return "help";
-    if (text.indexOf("/assist ") == 0) {
-        return text.substring(8).trim().toLowerCase();
-    }
-
+    text = String(message).trim().toLowerCase();
+    if (text == "/assist" || text == "/assist help") return "help";
+    if (text == "/assist status") return "status";
+    if (text == "/assist resources") return "resources";
     return "";
 }
 
-function handleChat(event) {
-    // PlayerChatEvent используется как безопасный событийный хук.
-    // Никакие серверные или несуществующие методы NetClient не вызываются.
-    if (event == null || event.message == null) return;
+function handlePlayerChat(event) {
+    var command;
+    var wave;
+    var coreExists;
 
-    var command = getCommand(event.message);
+    if (event == null) return;
+
+    command = commandFromMessage(event.message);
     if (command == "") return;
 
     if (command == "help") {
-        showAssistantMessage(
-            "команды: /assist help, /assist status, /assist resources"
-        );
+        assistantToast("команды: /assist help, /assist status, /assist resources");
     } else if (command == "status") {
-        var wave = 0;
+        wave = 0;
         if (Vars.state != null) wave = Vars.state.wave;
-
-        showAssistantMessage(
-            "ассистент работает; текущая волна: " + wave
-        );
+        assistantToast("мод работает. Текущая волна: " + wave);
     } else if (command == "resources") {
-        var coreAvailable = false;
+        coreExists = false;
         if (Vars.player != null && Vars.player.team() != null) {
-            coreAvailable = Vars.player.team().core() != null;
+            coreExists = Vars.player.team().core() != null;
         }
-
-        showAssistantMessage(
-            "команда получена; ядро доступно: " + coreAvailable
-        );
-    } else {
-        showAssistantMessage(
-            "неизвестная команда. Используйте /assist help"
-        );
+        assistantToast("ядро команды доступно: " + coreExists);
     }
 }
 
@@ -72,10 +56,11 @@ Events.on(EventType.ClientLoadEvent, function(event) {
 
 Events.on(EventType.WorldLoadEvent, function(event) {
     Time.run(60, function() {
-        showAssistantToast("[cyan]Ассистент активен! Мод работает.");
-        Log.info("[Assist] WorldLoadEvent обработан");
+        assistantToast("[cyan]Ассистент активен! Мод работает.");
+        Log.info("[Assist] мир загружен");
     });
 });
 
-Events.on(EventType.PlayerChatEvent, handleChat);
-Log.info("[Assist] событийные обработчики зарегистрированы");
+// Событийный хук чата не требует регистрации серверной команды.
+Events.on(EventType.PlayerChatEvent, handlePlayerChat);
+Log.info("[Assist] обработчики клиентских событий зарегистрированы");
