@@ -4,6 +4,6 @@
   "author": "Mindastory",
   "description": "Игровой ассистент Mindustry: команды чата, анализ волн, обороны, ресурсов и схем.",
   "version": "1.0.0",
-  "minGameVersion": 136,
+  "minGameVersion": 154,
   "main": "main.js"
 }
