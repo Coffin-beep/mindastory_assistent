@@ -1,0 +1,10 @@
+{
+  "name": "defense-factory-ai-assistant",
+  "displayName": "Defense & Factory AI Assistant",
+  "author": "Mindastory",
+  "description": "Игровой ассистент Mindustry v7: команды чата, анализ волн, обороны, ресурсов и схем.",
+  "version": "1.0.0",
+  "minGameVersion": "7.0",
+  "hidden": false,
+  "scripts": ["main.js"]
+}
