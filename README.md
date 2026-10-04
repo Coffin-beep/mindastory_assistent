@@ -26,6 +26,21 @@ DefenseFactoryAssistant/
 
 ## Установка на ПК
 
+### Вариант 1: ZIP-архив
+
+1. Скачайте ZIP-архив мода из pull request: откройте вкладку **Code → Download ZIP** или скачайте файл `DefenseFactoryAssistant.zip` из раздела релиза/артефактов.
+2. Распакуйте архив в каталог модов Mindustry.
+3. Если архив распаковался с дополнительной папкой вроде `mindastory_assistent-main`, переименуйте её в `DefenseFactoryAssistant` или убедитесь, что `mod.json` находится непосредственно внутри папки мода.
+4. Итоговый путь должен выглядеть так:
+
+```text
+.../Mindustry/mods/DefenseFactoryAssistant/mod.json
+```
+
+5. Запустите Mindustry, откройте **Настройки → Моды**, включите мод и перезапустите игру.
+
+### Вариант 2: копирование папки
+
 1. Сохраните эту папку целиком в каталог модов Mindustry:
    - Windows: `%AppData%\\Mindustry\\mods\\DefenseFactoryAssistant`
    - Linux: `~/.local/share/Mindustry/mods/DefenseFactoryAssistant`
